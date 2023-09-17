@@ -1,0 +1,12 @@
+Enter the name of a file to read from:
+
+Error: Unrecognizable command in line 2
+
+Error: Unrecognizable command in line 13
+
+Total lines: 14
+Commented lines: 2
+Number of words in the Text to be formatted: 0
+Bold commands: 2
+Italic commands: 1
+Regular commands: 1

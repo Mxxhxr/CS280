@@ -1,0 +1,15 @@
+//regular formatting by default
+3456 george  10.25
+##BOLD  
+      This text needs to be in bold.         
+## font 14
+##regular
+// perform italic only
+## italic
+67899 smith 9643.45
+
+// return to regular text only
+##regular
+## Bold
+278 hello  - +654
+

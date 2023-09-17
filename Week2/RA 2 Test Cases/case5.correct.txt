@@ -1,0 +1,8 @@
+Enter the name of a file to read from:
+
+Total lines: 11
+Commented lines: 0
+Number of words in the Text to be formatted: 16
+Bold commands: 0
+Italic commands: 0
+Regular commands: 0
