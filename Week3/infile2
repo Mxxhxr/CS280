@@ -1,0 +1,14 @@
+# Simple _array_constructs.
+@fred = ("How", "are", "you", "today?");
+print "@fred contains ( @_fred ).\n";
+
+$mike = $fred[1];
+print " @mike _fred [3]\n";
+
+# The array name in a scalar context gives the size.
+@fred@size = @fred;
+print ' @fred has ', " @fred_size elements.\n";
+
+# The $#name gives the max subscript (size less one).
+print "Max sub is $#fred\n";
+

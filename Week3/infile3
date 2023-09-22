@@ -1,0 +1,7 @@
+# Various operations on scalar (string) variables.
+_fred = Fred__here;
+@bar_ney = @56 + ;
+$sum = _10 + _barney ;
+print 'The variable $fred' . " contains $fred. \n";
+print "Sum is $sum. \n";
+
