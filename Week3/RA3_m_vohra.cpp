@@ -2,52 +2,28 @@
 #include <fstream>
 #include <sstream>
 #include <cctype>
+#include <cstdlib>
 using namespace std;
-
-
-bool isWord(ifstream& inFile, string line) {
-    while(getline(inFile, line)) {
-        for(int i=0; i<line.length(); i++) {
-            if(i > 0) {
-                if(line[i] == ' ' && line[i-1] != ' ') {
-                    return true;
-                }
-                else if(line[i] != ' ' && line[i+1] == '\n') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-                return false;
-            }
-        }
-    }
-    return false;
-}
 
 string word;
 
-bool isSpecialName(ifstream& inFile, string line) { //wait, i need to do utilizing istringstream so i can read each word
-    while(getline(inFile, line)) {
-        istringstream iss(line);
-        while(iss >> word) {
-            for(int j=0; j<line.length(); j++) {
-                //if it starts with one of the special characters and the next one is a letter. and the next one is also the other
-                //special character, thats not allowed, so return false
-                if((word[0] == '_' || word[0] == '@') && isalpha(word[1]) == true) { //dont need to check if @_ bcuz 2nd char has to be letter
-                    if(word.find("__") != std::string::npos) { //checks if __ is in the word
-                        return false;
-                    }
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
+bool isSpecialName(string word) {
+    if((word[0] == '_' || word[0] == '@') && isalpha(word[1]) == true) { 
+        if(word.find("__") != std::string::npos) { //checks if __ is in the word
+            return false;
         }
+        else if(word.find('@', 1) != std::string::npos) {
+            return false;
+        }
+        //else if(isalnum(static_cast<unsigned char>(word[word.length() -1])) != true) {
+        else if(!isalnum(word.back())){
+        return false;
+        }
+        return true;
     }
     return false;
 }
+
 
 int main(int argc, char *argv[]) { 
     
@@ -59,6 +35,7 @@ int main(int argc, char *argv[]) {
     string filename = argv[1];
     string flag;
     ifstream inFile;
+
     inFile.open(filename.c_str());
     if (!inFile) {
         cerr << "CANNOT OPEN THE FILE " << filename << endl; 
@@ -83,13 +60,13 @@ int main(int argc, char *argv[]) {
                 if(flag == "-all") {
                     //count words ans special name
                     numWords++;
-                    if(isSpecialName(inFile, line) == true) {
+                    if(isSpecialName(word) == true) {
                         numSpecialName++;
                     }
                 } 
                 else if(flag == "-sp") {
                     //count special names only
-                    if(isSpecialName(inFile, line) == true) {
+                    if(isSpecialName(word) == true) {
                         numSpecialName++;
                     }
                 }
