@@ -2,22 +2,20 @@
 #include <fstream>
 #include <sstream>
 #include <cctype>
-#include <cstdlib>
 using namespace std;
 
-string word;
-
-bool isSpecialName(string word) {
-    if((word[0] == '_' || word[0] == '@') && isalpha(word[1]) == true) { 
-        if(word.find("__") != std::string::npos) { //checks if __ is in the word
+bool isSpecialName(string the_word) {
+    if(the_word.length() == 1) return false;
+    
+    if((the_word[0] == '_' || the_word[0] == '@') && isalpha(the_word[1]) != 0) { 
+        if(the_word.find("__") != std::string::npos) { //checks if __ is in the the_word
             return false;
         }
-        else if(word.find('@', 1) != std::string::npos) {
+        else if(the_word.find('@', 1) != std::string::npos) {
             return false;
         }
-        //else if(isalnum(static_cast<unsigned char>(word[word.length() -1])) != true) {
-        else if(!isalnum(word.back())){
-        return false;
+        else if(!isalnum(the_word.back())){
+            return false;
         }
         return true;
     }
@@ -50,31 +48,23 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    string line; //took out ,word; and placed it at the top so its global. (whats the affect of it being used twice in different places?)
-    int numWords, lineCount, numSpecialName;
+    string line;
+    int numWords = 0; 
+    int lineCount = 0;
+    int numSpecialName = 0;
     
     while (getline(inFile, line)) {
         lineCount++;
         istringstream iss(line);
-            while(iss >> word) {
-                if(flag == "-all") {
-                    //count words ans special name
-                    numWords++;
-                    if(isSpecialName(word) == true) {
-                        numSpecialName++;
-                    }
-                } 
-                else if(flag == "-sp") {
-                    //count special names only
-                    if(isSpecialName(word) == true) {
-                        numSpecialName++;
-                    }
-                }
-                else {
-                    // count just words (we can do this because we checked for valid flags before the while loop)
-                    numWords++;
-                }
-            }   
+        string word;
+        while(iss >> word) {
+            numWords++;
+            bool is_spc_nm = isSpecialName(word);
+            // cout << is_spc_nm << " : "<< word << endl;
+            if( is_spc_nm == true) {
+                numSpecialName++;
+            }  
+        }
     }
     //check if file was empty and exit
     inFile.close();
@@ -95,4 +85,3 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
-
