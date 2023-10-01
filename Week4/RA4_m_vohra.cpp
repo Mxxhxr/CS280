@@ -39,16 +39,9 @@ int main(int argc, char *argv[]) {
 
     string line;
     int lineCount = 0;
-    map<string, int> preps;
-    preps["about"] = 0;
-    preps["after"] = 0;
-    preps["below"] = 0;
-    preps["for"] = 0;
-    preps["from"] = 0;
-    preps["in"] = 0;
-    preps["into"] = 0;
-    preps["under"] = 0;
-    preps["with"] = 0;
+    string propositions[9] = {"about", "after", "below", "for", "from", "in", "into", "under", "with"};
+
+	map<string, int> myMap;
 
     
     while (getline(inFile, line)) {
@@ -56,7 +49,14 @@ int main(int argc, char *argv[]) {
         istringstream iss(line);
         string word;
         while(iss >> word) {
-            if preps
+            //clean words first
+            string cleanWrd = cleanWord(word);
+            //if word is in array but not in map, add it
+            if(find(begin(propositions)), end(propositions), cleanWord) {
+
+            }
+            // if word is in array and in map, increment in
+            // if word is not in array, continue
         }
     }
 
