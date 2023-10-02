@@ -8,11 +8,11 @@
 using namespace std;
 
 string cleanWord(string oldWord) {
-    string cleanWord = oldWord;
+    string cleanWord;
     for(int i = 0; i < oldWord.length(); i++) {
-        cleanWord[i] = tolower(cleanWord[i]);
-        if(ispunct(cleanWord[i])) {
-            cleanWord.erase(cleanWord[i]);
+        char c = tolower(oldWord[i]);
+        if(isalpha(c)) {
+            cleanWord += c;
         } 
     }
     return cleanWord;
@@ -40,9 +40,10 @@ int main(int argc, char *argv[]) {
     string line;
     int lineCount = 0;
     string propositions[9] = {"about", "after", "below", "for", "from", "in", "into", "under", "with"};
+    int arrLen = sizeof(propositions) / sizeof(propositions[0]);
 
 	map<string, int> myMap;
-
+    map<string, int>::iterator it;
     
     while (getline(inFile, line)) {
         lineCount++;
@@ -51,12 +52,24 @@ int main(int argc, char *argv[]) {
         while(iss >> word) {
             //clean words first
             string cleanWrd = cleanWord(word);
-            //if word is in array but not in map, add it
-            if(find(begin(propositions)), end(propositions), cleanWord) {
-
+            //check if proposition is in array
+            bool isPropos = false;
+            for(int i = 0; i < arrLen; i++) {
+                if(cleanWrd == propositions[i]) {
+                    isPropos = true;
+                    break; // if its in, break out and check if its in the map
+                }
             }
-            // if word is in array and in map, increment in
-            // if word is not in array, continue
+
+            if(isPropos) {
+                it = myMap.find(cleanWrd);
+                if(it != myMap.end()) { // if its already in map, increment
+                    it->second++;
+                }
+                else { //if not, initialize it in the map
+                    myMap[cleanWrd] = 1;
+                }
+            }
         }
     }
 
@@ -66,6 +79,44 @@ int main(int argc, char *argv[]) {
         cout << "File is empty." << endl;
         exit(1);
     }
+    
 
-    cout << "List of Prepositions seen in the file and their number of occurrences:" << endl;
+
+
+
+    string maxKey = "";
+    int maxCnt = -1;
+
+    for(it = myMap.begin(); it != myMap.end(); it++) {
+        if(it->second > maxCnt){
+            maxCnt = it->second;
+            maxKey = it->first;
+        }
+    }
+
+
+    if(myMap.empty()) {
+        cout << "No Preposition words from the given list are found in the file." << endl;
+    }
+    else {
+        cout << "List of Prepositions seen in the file and their number of occurrences:" << endl;
+        cout << endl;
+        for(it = myMap.begin(); it != myMap.end(); it++) {
+            cout << it->first << ": " << it->second << endl;
+        }
+        if(!maxKey.empty()) {
+            cout << "The preposition with maximum occurrences is " << "\"" << maxKey << "\"" << ", which is found " << maxCnt << " times." << endl;
+        }
+    }
+
+    // if(maxCnt == 0) {
+    //     cout << "No Preposition words from the given list are found in the file." << endl;
+    // } else {
+    //     cout << "List of Prepositions seen in the file and their number of occurrences:" << endl;
+    //     cout << endl;
+    //     for(it = myMap.begin(); it != myMap.end(); it++) {
+    //         cout << it->first << ": " << it->second << endl;
+    //     }
+    //     cout << "The preposition with maximum occurrences is " << "\"" << maxKey << "\"" << ", which is found " << maxCnt << " times." << endl;
+    // }
 }
