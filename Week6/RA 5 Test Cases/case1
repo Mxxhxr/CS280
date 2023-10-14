@@ -1,0 +1,8 @@
+PROGRAM program 1
+IDENT prog1 1
+SEMICOL ; 1
+BEGIN begin 7
+IDENT r 8
+ASSOP := 8
+ICONST 50 8
+IDENT end 9

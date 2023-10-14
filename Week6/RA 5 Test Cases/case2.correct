@@ -1,0 +1,15 @@
+ICONST: (3456) at line no. 1
+RCONST: (10.25) at line no. 1
+ICONST: (1) at line no. 1
+COMMA: [,] at line no. 1
+ICONST: (234) at line no. 1
+ICONST: (45) at line no. 1
+IDENT: "hello" at line no. 1
+ICONST: (4321) at line no. 2
+RCONST: (1.25) at line no. 2
+RCONST: (75.) at line no. 2
+DOT: [.] at line no. 2
+ICONST: (45) at line no. 2
+ICONST: (278) at line no. 3
+ICONST: (10) at line no. 3
+ICONST: (25) at line no. 3
