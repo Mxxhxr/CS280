@@ -1,0 +1,131 @@
+#include <iostream>
+#include <map>
+#include<cctype>
+#include <fstream>
+#include <sstream>
+#include "lex.cpp"
+
+
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+
+    bool flagV = false;
+    bool flagNconst = false;
+    bool flagSconst = false;
+    bool flagBconst = false;
+    bool flagIdent = false;
+    string fileName;
+    string flag;
+    ifstream inFile;
+    //check for optional flags
+    for(int i = 1; i < argc; i++) {
+        string flag = argv[i];
+        if(flag == "-v") {
+            flagV = true;
+        }
+        else if(flag == "-nconst") {
+            flagNconst = true;
+        }
+        else if(flag == "-sconst") {
+            flagSconst = true;
+        }
+        else if(flag == "-bonst") {
+            flagBconst = true;
+        }
+        else if(flag == "-ident") {
+            flagIdent = true;
+        }
+        else if(flag[0] == '-') {
+            cout << "UNRECOGNIZED FLAG {" << flag << "}" << endl;
+            exit(1);
+        }
+        else {
+            if(fileName.empty()) { //else means no "-" so its a filename, but check if its empty first (if not, already a fileName found)
+                fileName = flag;
+            }
+            else {
+                cout << "ONLY ONE FILE NAME IS ALLOWED." << endl;
+                exit(1);
+            }
+        }
+    }
+
+    if(fileName.empty()) {
+        cout << "NO SPECIFIED INPUT FILE." << endl;
+        exit(1);
+    }
+    
+    
+    inFile.open(fileName);
+    if (!inFile) {
+        cerr << "CANNOT OPEN THE FILE " << fileName << endl;
+        exit(1);
+    }
+
+    string line;
+    int numLines;
+    int numTokens;
+    int numIdentifiers;
+    int numNumbers;
+    int numBooleans;
+    int numStrings;
+    string identifiers[numIdentifiers]; 
+
+    while(inFile) {
+        LexItem tok = getNextToken(inFile, numLines);
+        numLines++; //prolly not gonna work
+    }
+
+    inFile.close();
+    if(numLines == 0) {
+        cout << "Empty File." << endl;
+        exit(1);
+
+    }
+    cout << flagV << endl;
+    cout << flagBconst << endl;
+    cout << flagIdent << endl;
+    cout << flagNconst << endl;
+    cout << flagSconst << endl;
+    
+    cout << "Lines: " << numLines << endl;
+    cout << "Total Tokens: " << numTokens << endl;
+    cout << "Identifiers: " << numIdentifiers << endl;
+    cout << "Numbers: " << numNumbers << endl;
+    cout << "Booleans: " << numBooleans << endl;
+    cout << "Strings: " << numStrings << endl;
+}
+
+
+/*
+enum LexState {START, seenIDENT, seenINT, seenREAL, seenSTR, seenERR, seenComment, DONE};
+    LexState state = START;
+
+    switch(state) {
+        case START:
+            //start code
+        case seenIDENT:
+            //ident code
+        case seenINT:
+            //integer code
+        case seenREAL:
+            //real code
+        case seenSTR:
+            //string code
+        case seenERR:
+            //error code
+        case seenComment:
+            //comment code
+        case DONE:
+            //done code
+    }
+        
+        
+    //case Start:
+        //case Token:
+            //case Lexeme:
+                //do something
+        //repeat for all possible values
+*/
