@@ -265,13 +265,6 @@ LexItem getNextToken(istream& in, int& linenum) {
         switch(state) {
 //start case
             case START:
-                case: ",":
-                    lexeme += ch;
-                    string tempLex = lexeme;
-                    lexeme = "";
-                    return LexItem(COMMA, tempLex, linenum);
-                    break;
-
                 if(isspace(ch)) {
                     continue;
                 }

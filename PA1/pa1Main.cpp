@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
     string identifiers[20]; 
 
     while(inFile) {
+        
         LexItem tok = getNextToken(inFile, numLines);
         cout << tok << endl;
         numLines++; //prolly not gonna work
