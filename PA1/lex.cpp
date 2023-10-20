@@ -50,6 +50,7 @@ LexItem id_or_kw(const string &lexeme, int linenum) {
     lexToTok[")"] = RPAREN;
     lexToTok["."] = DOT;
     lexToTok[":"] = COLON;
+    lexToTok[""] = DONE;
 
     //create iterator for map
     map<string, Token>::iterator iterator = lexToTok.find(lexeme);
@@ -124,7 +125,7 @@ ostream& operator<<(ostream& out, const LexItem& tok) {
     switch(toks) {
         //IDENT
         case IDENT:
-        out << "IDENT: \"" << lexeme << "\" at line no. " << line << endl;
+        out << "IDENT: \"" << lexeme << "\"" << endl;
         break;
         //keywords
         case IF:
@@ -148,7 +149,7 @@ ostream& operator<<(ostream& out, const LexItem& tok) {
         break;
 
         case REAL:
-        out << "REAL: [" << lexeme << "] at line no. " << line << endl;
+        out << "REAL" << endl;
         break;
 
         case BOOLEAN:
@@ -176,7 +177,7 @@ ostream& operator<<(ostream& out, const LexItem& tok) {
         break;
 
         case PROGRAM:
-        out << "PROGRAM: [" << lexeme << "] at line no. " << line << endl;
+        out << "PROGRAM" << endl;
         break;
 
         //delimiters
@@ -257,13 +258,20 @@ LexItem getNextToken(istream& in, int& linenum) {
     string lexeme;
     string tempLex;
 
-    enum LexState {START, seenIDENT, seenINT, seenREAL, seenSTR, seenERR, seenComment, DONE};
+    enum LexState {START, seenIDENT, seenINT, seenREAL, seenSTR, seenERR, seenComment, seenEND};
     LexState state = START;
 
     while(in.get(ch)) {
         switch(state) {
 //start case
             case START:
+                case: ",":
+                    lexeme += ch;
+                    string tempLex = lexeme;
+                    lexeme = "";
+                    return LexItem(COMMA, tempLex, linenum);
+                    break;
+
                 if(isspace(ch)) {
                     continue;
                 }
@@ -384,12 +392,15 @@ LexItem getNextToken(istream& in, int& linenum) {
                 
                 break;
 //ident case                
-            case seenIDENT:     ///////////////////check on resrved kws
+            case seenIDENT:    ///////////////////check on resrved kws
                 if(isalnum(ch)|| ch == '_' || ch == '$') {
                     lexeme +=ch;
                 }
+                else if(lexeme == "END") {
+                    state = seenEND;
+                }
                 else {
-                    return(id_or_kw(lexeme, linenum));
+                    return id_or_kw(lexeme, linenum);
                     lexeme = "";
                 }
                 break;
@@ -410,89 +421,59 @@ LexItem getNextToken(istream& in, int& linenum) {
                 }
                 break;
 //real case                
-                case seenREAL:
-                    if(isdigit(ch) && ch != '.') {
-                        lexeme += ch;
+            case seenREAL:
+                if(isdigit(ch) && ch != '.') {
+                    lexeme += ch;
+                }
+                else {
+                    string tempLex = lexeme;
+                    lexeme = "";
+                    return LexItem(RCONST, tempLex, linenum);
+                }
+                break;
+//string case
+            case seenSTR:
+                if(ch != '\'' && ch != '\n' && !in.eof()) {
+                    lexeme += ch;
+                }
+                else {
+                    if(ch == '\n') {
+                        state = seenERR;
+                        continue;
+                    }
+                    else if(in.eof()) {
+                        return LexItem(ERR, lexeme, linenum);
+                        continue;
                     }
                     else {
                         string tempLex = lexeme;
                         lexeme = "";
-                        return LexItem(RCONST, tempLex, linenum);
+                        return LexItem(SCONST, tempLex, linenum);
                     }
-                    break;
-//string case
-                case seenSTR:
-                    if(ch != '\'' && ch != '\n' && !in.eof()) {
-                        lexeme += ch;
-                    }
-                    else {
-                        if(ch == '\n') {
-                            state = seenERR;
-                            continue;
-                        }
-                        else if(in.eof()) {
-                            return LexItem(ERR, lexeme, linenum);
-                            continue;
-                        }
-                        else {
-                            string tempLex = lexeme;
-                            lexeme = "";
-                            return LexItem(SCONST, tempLex, linenum);
-                        }
-                    }
-                    break;
+                }
+                break;
 //error caase
-                case seenERR:
-                    tempLex = lexeme;
-                    lexeme == "";
-                    return LexItem(ERR, tempLex, linenum);
-                    break;
+            case seenERR:
+                tempLex = lexeme;
+                lexeme = "";
+                return LexItem(ERR, tempLex, linenum);
+                break;
 //coment case
-                case seenComment:
-                    if(ch != '}') {
-                        continue;
-                    }
-                    else {
-                        state = START;
-                    }
-                    break;
+            case seenComment:
+                if(ch != '}') {
+                    continue;
+                }
+                else {
+                    state = START;
+                }
+                break;
 //done case
-                case DONE:
-                    if(in.eof()) {
-                        return LexItem(DONE, lexeme, linenum);
-                    }
+            case seenEND:
+                if(in.eof()) {
+                    return LexItem(DONE, lexeme, linenum);
+                }
+                break;
         }
     }
-    return LexItem(DONE, lexeme, linenum);
+    return LexItem(DONE, "", linenum);
 }
-
-/*
-enum LexState {START, seenIDENT, seenINT, seenREAL, seenSTR, seenERR, seenComment, DONE};
-    LexState state = START;
-
-    switch(state) {
-        case START:
-            //start code
-        case seenIDENT:
-            //ident code
-        case seenINT:
-            //integer code
-        case seenREAL:
-            //real code
-        case seenSTR:
-            //string code
-        case seenERR:
-            //error code
-        case seenComment:
-            //comment code
-        case DONE:
-            //done code
-    }
-        
-        
-    //case Start:
-        //case Token:
-            //case Lexeme:
-                //do something
-        //repeat for all possible values
-*/

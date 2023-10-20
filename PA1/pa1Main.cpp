@@ -3,7 +3,7 @@
 #include<cctype>
 #include <fstream>
 #include <sstream>
-#include "lex.cpp"
+#include "lex.h"
 
 
 
@@ -22,24 +22,26 @@ int main(int argc, char *argv[]) {
     //check for optional flags
     for(int i = 1; i < argc; i++) {
         string flag = argv[i];
-        if(flag == "-v") {
-            flagV = true;
-        }
-        else if(flag == "-nconst") {
-            flagNconst = true;
-        }
-        else if(flag == "-sconst") {
-            flagSconst = true;
-        }
-        else if(flag == "-bonst") {
-            flagBconst = true;
-        }
-        else if(flag == "-ident") {
-            flagIdent = true;
-        }
-        else if(flag[0] == '-') {
-            cout << "UNRECOGNIZED FLAG {" << flag << "}" << endl;
-            exit(1);
+        if(flag[0] == '-') {
+            if(flag == "-v") {
+                flagV = true;
+            }
+            else if(flag == "-nconst") {
+                flagNconst = true;
+            }
+            else if(flag == "-sconst") {
+                flagSconst = true;
+            }
+            else if(flag == "-bonst") {
+                flagBconst = true;
+            }
+            else if(flag == "-ident") {
+                flagIdent = true;
+            }
+            else {
+                cout << "UNRECOGNIZED FLAG {" << flag << "}" << endl;
+                exit(1);
+            }
         }
         else {
             if(fileName.empty()) { //else means no "-" so its a filename, but check if its empty first (if not, already a fileName found)
@@ -65,21 +67,22 @@ int main(int argc, char *argv[]) {
     }
 
     string line;
-    int numLines;
-    int numTokens;
-    int numIdentifiers;
-    int numNumbers;
-    int numBooleans;
-    int numStrings;
-    string identifiers[numIdentifiers]; 
+    int numLines = 0;
+    int numTokens = 0;
+    int numIdentifiers = 0;
+    int numNumbers = 0;
+    int numBooleans = 0;
+    int numStrings = 0;
+    string identifiers[20]; 
 
     while(inFile) {
         LexItem tok = getNextToken(inFile, numLines);
+        cout << tok << endl;
         numLines++; //prolly not gonna work
     }
 
     inFile.close();
-    if(numLines == 0) {
+    if(numLines == 1) {
         cout << "Empty File." << endl;
         exit(1);
 
@@ -97,35 +100,3 @@ int main(int argc, char *argv[]) {
     cout << "Booleans: " << numBooleans << endl;
     cout << "Strings: " << numStrings << endl;
 }
-
-
-/*
-enum LexState {START, seenIDENT, seenINT, seenREAL, seenSTR, seenERR, seenComment, DONE};
-    LexState state = START;
-
-    switch(state) {
-        case START:
-            //start code
-        case seenIDENT:
-            //ident code
-        case seenINT:
-            //integer code
-        case seenREAL:
-            //real code
-        case seenSTR:
-            //string code
-        case seenERR:
-            //error code
-        case seenComment:
-            //comment code
-        case DONE:
-            //done code
-    }
-        
-        
-    //case Start:
-        //case Token:
-            //case Lexeme:
-                //do something
-        //repeat for all possible values
-*/
