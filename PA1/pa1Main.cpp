@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "lex.h"
+#include "lex.cpp"
 
 
 
@@ -32,7 +33,7 @@ int main(int argc, char *argv[]) {
             else if(flag == "-sconst") {
                 flagSconst = true;
             }
-            else if(flag == "-bonst") {
+            else if(flag == "-bconst") {
                 flagBconst = true;
             }
             else if(flag == "-ident") {
@@ -76,11 +77,55 @@ int main(int argc, char *argv[]) {
     string identifiers[20]; 
 
     while(inFile) {
-        
-        LexItem tok = getNextToken(inFile, numLines);
-        cout << tok << endl;
-        numLines++; //prolly not gonna work
+        if(flagV && flagNconst && flagSconst && flagBconst && flagIdent) {
+            //all flags
+            LexItem tok = getNextToken(inFile, numLines);
+            numTokens++; 
+            cout << tok << endl;
+
+            //count all the tokens,idents,nums,bools,and string (gotta delete duplicates)
+            if(tok.GetToken() == IDENT) {
+                numIdentifiers++;
+            }
+            if(tok.GetToken() == ICONST || tok.GetToken() == RCONST) {
+                numNumbers++;
+            }
+            if(tok.GetToken() == SCONST) {
+                numStrings++;
+            }
+            if(tok.GetToken() == BCONST && (tok.GetLexeme() == "true" || tok.GetLexeme() == "false")) {
+                numBooleans++;
+            }
+
+        }
+        else if(BCONST) {
+            LexItem tok = getNextToken(inFile, numLines);
+            if(tok.GetToken() = BCONST {
+                cout << tok << endl;
+            })
+
+        }
+
+
+
+
+
+
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
 
     inFile.close();
     if(numLines == 1) {
@@ -95,7 +140,7 @@ int main(int argc, char *argv[]) {
     cout << flagSconst << endl;
     
     cout << "Lines: " << numLines << endl;
-    cout << "Total Tokens: " << numTokens << endl;
+    cout << "Total Tokens: " << numTokens - 1 << endl;
     cout << "Identifiers: " << numIdentifiers << endl;
     cout << "Numbers: " << numNumbers << endl;
     cout << "Booleans: " << numBooleans << endl;
