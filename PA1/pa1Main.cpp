@@ -3,10 +3,13 @@
 #include<cctype>
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include <algorithm>
 #include "lex.h"
 #include "lex.cpp"
 
-
+//fix token count
+//fix line count
 
 using namespace std;
 
@@ -70,79 +73,138 @@ int main(int argc, char *argv[]) {
     string line;
     int numLines = 0;
     int numTokens = 0;
-    int numIdentifiers = 0;
-    int numNumbers = 0;
-    int numBooleans = 0;
-    int numStrings = 0;
-    string identifiers[20]; 
 
+
+//vector for ICONST RCONST
+    vector<string>numberCount;
+    vector<string>::iterator it;
+
+    vector<double> realNumCount;
+
+//vector for BOOL
+    vector<string>boolCount;
+    vector<string>::iterator it1;
+//vector for IDENT
+    vector<string>identCount;
+    vector<string>::iterator it2;
+//vector for SCONST
+    vector<string>stringCount;
+    vector<string>::iterator it3;
+    
     while(inFile) {
-        if(flagV && flagNconst && flagSconst && flagBconst && flagIdent) {
-            //all flags
-            LexItem tok = getNextToken(inFile, numLines);
-            numTokens++; 
-            cout << tok << endl;
 
-            //count all the tokens,idents,nums,bools,and string (gotta delete duplicates)
-            if(tok.GetToken() == IDENT) {
-                numIdentifiers++;
-            }
-            if(tok.GetToken() == ICONST || tok.GetToken() == RCONST) {
-                numNumbers++;
-            }
-            if(tok.GetToken() == SCONST) {
-                numStrings++;
-            }
-            if(tok.GetToken() == BCONST && (tok.GetLexeme() == "true" || tok.GetLexeme() == "false")) {
-                numBooleans++;
-            }
+        //create lexitem and get next token
+        LexItem tok = getNextToken(inFile, numLines);
+        numTokens++;
 
+        // if (tok == i) {
+        //     numLines++;
+
+        string lexeme = tok.GetLexeme();
+        it = numberCount.begin();
+
+
+        if(tok != DONE) {
+            if(tok == IDENT) {
+                it2 = identCount.insert(it2, lexeme);
+            }
+            else if(tok == ICONST || tok == RCONST) {
+                if (find(numberCount.begin(), numberCount.end(), lexeme) == numberCount.end()) {
+                it = numberCount.insert(it, lexeme);
+                }
+            }
+            else if(tok == BCONST) {
+                it1 = boolCount.insert(it1, lexeme);
+            }
+            else if(tok == SCONST) {
+                it3 = stringCount.insert(it3, lexeme);
+            }
         }
-        else if(BCONST) {
-            LexItem tok = getNextToken(inFile, numLines);
-            if(tok.GetToken() = BCONST {
-                cout << tok << endl;
-            })
 
+//sort ident vector
+        sort(identCount.begin(), identCount.end());
+        identCount.erase(unique(identCount.begin(), identCount.end()), identCount.end());
+    //sort number vector
+        sort(numberCount.begin(), numberCount.end());
+        numberCount.erase(unique(numberCount.begin(), numberCount.end()), numberCount.end());
+
+        for (const string& number : numberCount) {
+            double value = stod(number);
+            realNumCount.push_back(value);
         }
 
+        sort(realNumCount.begin(), realNumCount.end());
+        realNumCount.erase(unique(realNumCount.begin(), realNumCount.end()), realNumCount.end());
 
 
+    //sort string vector
+        sort(stringCount.begin(), stringCount.end());
+        stringCount.erase(unique(stringCount.begin(), stringCount.end()), stringCount.end());
 
-
-
-
-
-
+        if(flagV) {
+            cout << tok;
+        }
 
     }
 
-
-
-
-
-
-
-
-
-
-
+//close file
     inFile.close();
-    if(numLines == 1) {
+    if(numLines < 1) {
         cout << "Empty File." << endl;
         exit(1);
 
     }
-    cout << flagV << endl;
-    cout << flagBconst << endl;
-    cout << flagIdent << endl;
-    cout << flagNconst << endl;
-    cout << flagSconst << endl;
-    
+
+
     cout << "Lines: " << numLines << endl;
     cout << "Total Tokens: " << numTokens - 1 << endl;
-    cout << "Identifiers: " << numIdentifiers << endl;
-    cout << "Numbers: " << numNumbers << endl;
-    cout << "Booleans: " << numBooleans << endl;
-    cout << "Strings: " << numStrings << endl;
+    cout << "Identifiers: " << identCount.size() << endl;
+    cout << "Numbers: " << realNumCount.size() << endl;
+    cout << "Booleans: " << boolCount.size() << endl;
+    cout << "Strings: " << stringCount.size() << endl;
+
+//ident flag
+    if(flagIdent) {
+        cout << "IDENTIFIERS:" << endl;
+        for (size_t i = 0; i < identCount.size(); ++i) {
+            cout << identCount[i];
+            if (i < identCount.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << endl;
+
+    }
+
+
+//nconst flags
+    if(flagNconst) {
+        cout << "NUMBERS:" << endl;
+//convert number vector to int and print
+        for (const double& value : realNumCount) {
+            int intValue = static_cast<int>(value);
+            cout << intValue << endl;
+        }
+
+    }
+
+    if(flagBconst) {
+        cout << "BOOLEANS:" << endl;
+//loop through boolean vector and print
+        for(const string& bools : boolCount) {
+            cout << bools << endl;   
+        }
+
+    }
+
+
+    if(flagSconst) {
+        cout << "STRINGS:" << endl;
+//print out strings
+        for(const string& STRINGS : stringCount) {
+            cout << "\"" << STRINGS << "\"" << endl;
+        }
+        //cout << endl;
+    }
+
 }

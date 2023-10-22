@@ -264,236 +264,277 @@ LexItem getNextToken(istream& in, int& linenum) {
 
     
     while(in.get(ch)) {
-        if(ch == '\n') {
-            linenum++;
-            continue;
-        }
+        // if(ch == '\n') {
+        //     linenum++;
+        //     //continue;
+        // }
 
-        switch(state) {
-//start case
-            case START:
-                if (isspace(ch)) {
-                    continue; // Ignore leading spaces
-                }
-                // if(isdigit(ch)){
-                //     lexeme += ch;
-                //     state = seenINT;
-                // }
-                if(isalpha(ch) || ch == '_' || ch == '$') {
-                    lexeme += ch;
-                    state = seenIDENT;
-                    continue;
-                }
-                else {
-                    if (ch == '\n') {
-                        linenum++;
-                        continue;
-                    }
-                    if(ch == '{') {
-                        state = seenComment;
-                        continue;
-                    }
-                    if(isdigit(ch)) {
-                        lexeme += ch;
-                        state = seenINT;
-                        continue;
-                    }
-                    if(ch == '+') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(PLUS, tempLex, linenum);
-                    }
-                    if(ch == '-') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(MINUS, tempLex, linenum);
-                    }
-                    if(ch == '*') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(MULT, tempLex, linenum);
-                    }
-                    if(ch == '/') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(DIV, tempLex, linenum);
-                    }
-                    if(ch == ':') {
-                        lexeme += ch;
-                        char nxtCh = in.peek();
-                        if(nxtCh == '=') {
-                            in.get();
-                            lexeme += nxtCh;
-                            string tempLex = lexeme;
-                            lexeme = "";
-                            return LexItem(ASSOP, tempLex, linenum);
+            switch(state) {
+    //start case
+                case START:
+                    if (isspace(ch) ) {
+                        if(ch == '\n') {
+                            linenum++;
                         }
-                        else {
-                            string tempLex = lexeme;
-                            lexeme = "";
-                            return LexItem(COLON, tempLex, linenum);
-                        }
+                        continue; // Ignore leading spaces
                     }
-                    if(ch == '=') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(EQ, tempLex, linenum); 
-                    }
-                    if(ch == '<') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(LTHAN, tempLex, linenum); 
-                    }
-                    if(ch == '>') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(GTHAN, tempLex, linenum); 
-                    }
-                    if(ch == ',') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(COMMA, tempLex, linenum);
-                    } 
-                    if(ch == ';') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(SEMICOL, tempLex, linenum);
-                    } 
-                    if(ch == '(') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(LPAREN, tempLex, linenum);
-                    } 
-                    if(ch == ')') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(RPAREN, tempLex, linenum);
-                    } 
-                    if(ch == '.') {
-                        lexeme += ch;
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(DOT, tempLex, linenum);
-                    }
-                    if(isalnum(ch) || ch == '_' || ch == '$') {
+                    if(isalpha(ch) || ch == '_' || ch == '$') {
+
                         lexeme += ch;
                         state = seenIDENT;
                         continue;
                     }
-                    if(ch == '\'') {
-                        state = seenSTR;
-                        continue;
-                    }
-                    if(ch == '"') {
-                        lexeme += ch;
-                        state = seenERR;
-                    }
-                }
-                break;
-//ident case                
-            case seenIDENT:
-                if(isalnum(ch)|| ch == '_' || ch == '$') {
-                    lexeme +=ch;
-                }
-                else {
-                    in.unget();
-                    state = START;
-                    string tempLex = lexeme;
-                    lexeme = "";
-                    return id_or_kw(tempLex, linenum);
-                }
-                break;
-//integer case                    
-            case seenINT:
-                if(isalpha(ch)) {
-                    lexeme += ch;
-                    state = seenIDENT;
-                    continue;
-                }
-                else if(isdigit(ch)) {
-                    lexeme += ch;
-                }
-                else if(ch == '.') {
-                    lexeme += ch;
-                    state = seenREAL;
-                    continue;
-                }
-                else if(ch == ';') {
-                    in.unget();
-                    string tempLex = lexeme;
-                    lexeme = "";
-                    return LexItem(ICONST, tempLex, linenum);
-                }
-                else {
-                    string tempLex = lexeme;
-                    lexeme = "";
-                    return LexItem(ICONST, tempLex, linenum);
-                }
-                break;
-//real case                
-            case seenREAL:
-                if(isdigit(ch) && ch != '.') {
-                    lexeme += ch;
-                }
-                else {
-                    string tempLex = lexeme;
-                    lexeme = "";
-                    return LexItem(RCONST, tempLex, linenum);
-                }
-                break;
-//string case
-            case seenSTR:
-                if(ch != '\'' && ch != '\n' && !in.eof()) {
-                    lexeme += ch;
-                }
-                else {
+                    else {
+                        // if (ch == '\n') {
+                        //     //linenum++;
+                        //     continue;
+                        // }
+                        if(ch == '{') {
+                            state = seenComment;
+                            continue;
+                        }
+                        if(isdigit(ch)) {
+                            lexeme += ch;
+                            state = seenINT;
+                            continue;
+                        }
+                        if(ch == '+') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(PLUS, tempLex, linenum);
+                        }
+                        if(ch == '-') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(MINUS, tempLex, linenum);
+                        }
+                        if(ch == '*') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(MULT, tempLex, linenum);
+                        }
+                        if(ch == '/') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(DIV, tempLex, linenum);
+                        }
+                        if(ch == ':') {
+                            lexeme += ch;
+                            char nxtCh = in.peek();
+                            if(nxtCh == '=') {
+                                in.get();
+                                lexeme += nxtCh;
+                                string tempLex = lexeme;
+                                lexeme = "";
+                                return LexItem(ASSOP, tempLex, linenum);
+                            }
+                            else {
+                                string tempLex = lexeme;
+                                lexeme = "";
+                                return LexItem(COLON, tempLex, linenum);
+                            }
+                        }
+                        if(ch == '=') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(EQ, tempLex, linenum); 
+                        }
+                        if(ch == '<') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(LTHAN, tempLex, linenum); 
+                        }
+                        if(ch == '>') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(GTHAN, tempLex, linenum); 
+                        }
+                        if(ch == ',') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(COMMA, tempLex, linenum);
+                        } 
+                        if(ch == ';') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(SEMICOL, tempLex, linenum);
+                        } 
+                        if(ch == '(') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(LPAREN, tempLex, linenum);
+                        } 
+                        if(ch == ')') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(RPAREN, tempLex, linenum);
+                        } 
+                        if(ch == '.') {
+                            lexeme += ch;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(DOT, tempLex, linenum);
+                        }
+                        if(isalnum(ch) || ch == '_' || ch == '$') {
+                            lexeme += ch;
+                            state = seenIDENT;
+                            continue;
+                        }
+                        if(ch == '\'') {
+                            state = seenSTR;
+                            continue;
+                        }
+                        if(ch == '"') {
+                            lexeme += ch;
+                            state = seenERR;
+                        }
+    //             }
+                    break;
+    //ident case                
+                case seenIDENT:
                     if(ch == '\n') {
-                        state = seenERR;
+                        in.unget();
+                        state = START;
+                        string tempLex = lexeme;
+                        lexeme = "";
+                        return id_or_kw(tempLex, linenum);
+
+                    }
+                    if(isalnum(ch)|| ch == '_' || ch == '$') {
+                        lexeme +=ch;
+                    }
+                    else {
+                        if(ch == '\n') {
+                            in.putback(ch);
+                            state = START;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return id_or_kw(tempLex, linenum);
+                        }
+                        else {
+                            in.unget();
+                            state = START;
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return id_or_kw(tempLex, linenum);
+                        }
+                    }
+                    break;
+                    
+    //integer case                    
+                case seenINT:
+                    if(ch == '.') {
+                        lexeme += ch;
+                        state = seenREAL;
                         continue;
                     }
-                    else if(in.eof()) {
-                        return LexItem(ERR, lexeme, linenum);
+                    else if(isalpha(ch)) {
+                        lexeme += ch;
+                        state = seenIDENT;
                         continue;
+                    }
+                    else if(isdigit(ch)) {
+                        lexeme += ch;
+                    }
+                    else if(ch == ';') {
+                        in.unget();
+                        string tempLex = lexeme;
+                        lexeme = "";
+                        return LexItem(ICONST, tempLex, linenum);
                     }
                     else {
                         string tempLex = lexeme;
                         lexeme = "";
-                        return LexItem(SCONST, tempLex, linenum);
+                        return LexItem(ICONST, tempLex, linenum);
                     }
-                }
-                break;
-//error caase
-            case seenERR:
-                tempLex = lexeme;
-                lexeme = "";
-                return LexItem(ERR, tempLex, linenum);
-                break;
-//coment case
-            case seenComment:
-                if(ch != '}') {
-                    continue;
-                }
-                else {
-                    state = START;
-                }
-                break;
-//done case
-            // case seenEND:
-            //     if(in.eof()) {
-            //         return LexItem(DONE, lexeme, linenum);
-            //     }
-            //     break;
+                    break;
+    //real case                
+                case seenREAL:
+                    // if(ch == '.') {
+                    //     string tempLex = lexeme;
+                    //     lexeme = "";
+                    //     return LexItem(ERR, tempLex, linenum);
+                    // }
+                    if(in.peek() == ','){
+                        lexeme += ch;
+                        in.unget();
+                        string tempLex = lexeme;
+                        lexeme = "";
+                        return LexItem(RCONST, tempLex, linenum);
+                    }
+                    if (isdigit(ch) || (ch == '.' && isdigit(in.peek()))) {
+                        lexeme += ch;
+                    }
+                    else {
+                        string tempLex = lexeme;
+                        lexeme = "";
+                        return LexItem(RCONST, tempLex, linenum);
+                    }
+                    break;
+
+                    // if(isdigit(ch) && !isdigit(in.peek())) {
+                    //     string tempLex = lexeme;
+                    //     lexeme = "";
+                    //     return LexItem(RCONST, tempLex, linenum);
+                    // }
+                    // else {
+                    //     lexeme += ch;
+                    // }
+                    // break;
+    //string case
+                case seenSTR:
+                    if(ch != '\'' && ch != '\n' && !in.eof()) {
+                        lexeme += ch;
+                    }
+                    else {
+                        if(ch == '\n') {
+                            state = seenERR;
+                            continue;
+                        }
+                        else if(in.eof()) {
+                            return LexItem(ERR, lexeme, linenum);
+                            continue;
+                        }
+                        else {
+                            string tempLex = lexeme;
+                            lexeme = "";
+                            return LexItem(SCONST, tempLex, linenum);
+                        }
+                    }
+                    break;
+    //error caase
+                case seenERR:
+                    tempLex = lexeme;
+                    lexeme = "";
+                    return LexItem(ERR, tempLex, linenum);
+                    break;
+    //coment case
+                case seenComment:
+                    if(ch != '}') {
+                        continue;
+                    }
+                    else {
+                        state = START;
+                    }
+                    break;
+    //done case
+                // case seenEND:
+                //     if(in.eof()) {
+                //         return LexItem(DONE, lexeme, linenum);
+                //     }
+                //     break;
+            }
         }
     }
     return LexItem(DONE, "", linenum);
