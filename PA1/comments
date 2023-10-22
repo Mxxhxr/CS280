@@ -1,10 +1,10 @@
 program prog1;
-	{ Testing comments}  
+	{ Testing multi-line comment}  
 	{var
 	integer x1, y1;	
 	string str = "Welcome";
-	real z = 0.0 
+	real z = 0.0 }
 	
 begin
 	r = 50
-END.        
+END            
