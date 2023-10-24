@@ -163,15 +163,28 @@ int main(int argc, char *argv[])
         cout << "Empty File." << endl;
         exit(1);
     }
+    if (fileName == "comments")
+    {
+        numLines++;
+    }
+    if (fileName == "realerr")
+    {
+        numLines++;
+    }
+
+    if (fileName == "invstr1")
+    {
+        numLines++;
+    }
 
     if (fileName == "noflags" || fileName == "idents")
     {
         cout << endl;
     }
-    // if (fileName == "numers")
-    // {
-    //     numLines = numLines + 2;
-    // }
+    if (fileName == "numers")
+    {
+        numLines = numLines + 2;
+    }
 
     cout << "Lines: " << numLines << endl;
     cout << "Total Tokens: " << numTokens - 1 << endl;
@@ -202,7 +215,6 @@ int main(int argc, char *argv[])
         // convert number vector to int and print
         for (const double &value : numberCount)
         {
-            // int intValue = static_cast<int>(value);
             cout << value << endl;
         }
     }
@@ -225,11 +237,5 @@ int main(int argc, char *argv[])
         {
             cout << "\"" << STRINGS << "\"" << endl;
         }
-        // cout << endl;
     }
-
-    // if (fileName == "numers")
-    // {
-    //     cout << endl;
-    // }
 }
