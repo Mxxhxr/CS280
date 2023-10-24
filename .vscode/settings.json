@@ -2,6 +2,28 @@
     "files.associations": {
         "string": "cpp",
         "iosfwd": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__bit_reference": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "deque": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "string_view": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "optional": "cpp",
+        "complex": "cpp",
+        "istream": "cpp",
+        "atomic": "cpp",
+        "ios": "cpp",
+        "system_error": "cpp",
+        "unordered_set": "cpp"
     }
 }

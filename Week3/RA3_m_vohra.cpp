@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
             }  
         }
     }
+    
     //check if file was empty and exit
     inFile.close();
     if(lineCount == 0) {
