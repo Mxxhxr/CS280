@@ -309,6 +309,7 @@ LexItem getNextToken(istream &in, int &linenum)
             }
             else
             {
+
                 if (ch == '{')
                 {
                     state = seenComment;
@@ -533,6 +534,14 @@ LexItem getNextToken(istream &in, int &linenum)
                     lexeme = "";
                     return LexItem(RCONST, tempLex, linenum);
                 }
+                if (ch == '.')
+                {
+                    lexeme += ch;
+                    string tempLex = lexeme;
+                    lexeme = "";
+                    linenum += 1;
+                    return LexItem(ERR, tempLex, linenum);
+                }
                 if (isdigit(ch) || (ch == '.' && isdigit(in.peek())))
                 {
                     lexeme += ch;
@@ -575,7 +584,7 @@ LexItem getNextToken(istream &in, int &linenum)
             case seenERR:
                 tempLex = lexeme;
                 lexeme = "";
-                return LexItem(ERR, tempLex, linenum);
+                return LexItem(ERR, tempLex, linenum + 1);
                 break;
                 // coment case
             case seenComment:
