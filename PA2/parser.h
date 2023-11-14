@@ -15,7 +15,7 @@ using namespace std;
 
 
 
-extern bool Prog(istream& in, int& line);
+extern bool Prog(istream& in, int& line); //done
 extern bool DeclPart(istream& in, int& line);
 extern bool DeclStmt(istream& in, int& line);
 extern bool Stmt(istream& in, int& line);

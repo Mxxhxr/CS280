@@ -5,6 +5,9 @@
  * Fall 2023
 */
 
+//INCOMPLETE
+
+
 #include "parser.h"
 
 map<string, bool> defVar;
@@ -43,6 +46,28 @@ void ParseError(int line, string msg)
 {
 	++error_count;
 	cout << line << ": " << msg << endl;
+}
+
+
+bool Prog(istream& in, int& line) {
+	LexItem p = Parser::GetNextToken(in, line);
+	if(p != PROGRAM) {
+		ParseError(line, "Missing PROGRAM Keyword.");
+		return false;
+	}
+	return true;
+}
+
+
+extern bool DeclPart(istream& in, int& line) {
+	// LexItem nxt = Parser::GetNextToken(in, line);
+	// Parser::PushBackToken(nxt);
+	// if(nxt != VAR){
+	// 	ParseError(line, "Non-recognizable Declaration Part. (Missing VAR Keyword)");
+	// 	ParseError(line, "Incorrect Declaration Section.");
+	// return false;
+	// }
+	// return true;
 }
 
 
@@ -105,7 +130,6 @@ bool ExprList(istream& in, int& line) {
 	}
 	return status;
 }//ExprList
-
 
 
 
