@@ -441,6 +441,7 @@ LexItem getNextToken(istream &in, int &linenum)
                 if (ch == '\'')
                 {
                     state = seenSTR;
+                    //cout << "SAW A STR OMG -------->" << ch << endl;  ///////////////////////////////////////////////////
                     continue;
                 }
                 if (ch == '"')
@@ -556,37 +557,23 @@ LexItem getNextToken(istream &in, int &linenum)
                 break;
 
             case seenSTR:
-                if (ch != '\'' && ch != '\n' && !in.eof())
-                {
-                    lexeme += ch;
+                if( ch == '\n' ) {
+                    return LexItem(ERR, lexeme, linenum);
                 }
-                else
-                {
-                    if (ch == '\n')
-                    {
-                        state = seenERR;
-                        continue;
-                    }
-                    else if (in.eof())
-                    {
-                        return LexItem(ERR, lexeme, linenum);
-                        continue;
-                    }
-                    else
-                    {
-                        string tempLex = lexeme;
-                        lexeme = "";
-                        return LexItem(SCONST, tempLex, linenum);
-                    }
+                lexeme += ch;
+                if( ch == '\'' ) {
+                    lexeme = lexeme.substr(1, lexeme.length()-2);
+                    return LexItem(SCONST, lexeme, linenum);
                 }
                 break;
-                // error caase
+
+                // error case
             case seenERR:
                 tempLex = lexeme;
                 lexeme = "";
                 return LexItem(ERR, tempLex, linenum + 1);
                 break;
-                // coment case
+                // comment case
             case seenComment:
                 if (ch != '}')
                 {
