@@ -50,13 +50,40 @@ void ParseError(int line, string msg)
 
 
 bool Prog(istream& in, int& line) {
-	LexItem p = Parser::GetNextToken(in, line);
-	if(p != PROGRAM) {
+	//check for PROGRAM kwd
+
+	if(Parser::GetNextToken(in, line) != PROGRAM) {
 		ParseError(line, "Missing PROGRAM Keyword.");
 		return false;
 	}
-	return true;
+
+	LexItem IdentTok = Parser::GetNextToken(in, line);
+
+	//check if after PROGRAM is the IDENT program name
+	if(IdentTok != IDENT) {
+		ParseError(line, "Missing Program Name.");
+	}
+
+	//put ident in map(to save tok and skip to next, bcuz nothing to do with it)
+	defVar[IdentTok.GetLexeme()] = true;
+
+	LexItem s = Parser::GetNextToken(in, line);
+
+	//check if after program name is a semicolon
+	if(s != SEMICOL) {
+		ParseError(line, "Missing SEMICOLON After Program Name.");
+		return false;
+	}
+
+	if(!DeclPart) {
+		ParseError(line, "Incorrect Declaration Statement.");
+		return false;
+	}
+
 }
+
+
+
 
 
 extern bool DeclPart(istream& in, int& line) {
