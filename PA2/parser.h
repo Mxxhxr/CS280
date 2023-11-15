@@ -16,11 +16,11 @@ using namespace std;
 
 
 extern bool Prog(istream& in, int& line); //done
-extern bool DeclPart(istream& in, int& line); //DeclBlock
+extern bool DeclPart(istream& in, int& line); //DeclBlock done
 extern bool DeclStmt(istream& in, int& line); //
 extern bool Stmt(istream& in, int& line); //
 extern bool StructuredStmt(istream& in, int& line);
-extern bool CompoundStmt(istream& in, int& line);
+extern bool CompoundStmt(istream& in, int& line); //prog body? -> i think so
 extern bool SimpleStmt(istream& in, int& line);
 extern bool WriteLnStmt(istream& in, int& line); //
 extern bool WriteStmt(istream& in, int& line);
@@ -29,7 +29,7 @@ extern bool AssignStmt(istream& in, int& line); //
 extern bool Var(istream& in, int& line); //
 extern bool ExprList(istream& in, int& line); //
 extern bool Expr(istream& in, int& line); //
-extern bool LogANDExpr(istream& in, int& line);
+extern bool LogANDExpr(istream& in, int& line); //LogicExpr? -> i think so
 extern bool RelExpr(istream& in, int& line);
 extern bool SimpleExpr(istream& in, int& line);
 extern bool Term(istream& in, int& line); //
@@ -40,9 +40,9 @@ extern int ErrCount(); //
 #endif /* PARSE_H_ */
 
 /*
-ProgBody
-ForStmt
+ProgBody //
+ForStmt //dont have
 
-LogicExpr
+LogicExpr //
 
 */

@@ -79,6 +79,7 @@ bool Prog(istream& in, int& line) {
 		ParseError(line, "Incorrect Declaration Statement.");
 		return false;
 	}
+	return true;
 
 }
 
@@ -86,16 +87,96 @@ bool Prog(istream& in, int& line) {
 
 
 
-extern bool DeclPart(istream& in, int& line) {
-	// LexItem nxt = Parser::GetNextToken(in, line);
-	// Parser::PushBackToken(nxt);
-	// if(nxt != VAR){
-	// 	ParseError(line, "Non-recognizable Declaration Part. (Missing VAR Keyword)");
-	// 	ParseError(line, "Incorrect Declaration Section.");
-	// return false;
-	// }
-	// return true;
+bool DeclPart(istream& in, int& line) {
+	
+	if(Parser::GetNextToken(in, line) != VAR) {
+		ParseError(line, "Missing VAR in DeclPart.");
+		return false;
+	}
+
+	bool status = true;
+
+	while(status) {
+		LexItem curTok = Parser::GetNextToken(in, line);
+
+		if(curTok == BEGIN) {
+			//push back token
+			Parser::PushBackToken(curTok);
+			break;
+		}
+		else {
+			Parser::PushBackToken(curTok);
+		}
+
+		//check DeclStmt
+		if(!DeclStmt(in, line)) {
+			ParseError(line, "Syntax Error in DeclStmt.");
+			return false;
+		}
+
+		//check for semicolon
+		LexItem s = Parser::GetNextToken(in, line);
+		if(s != SEMICOL) {
+			ParseError(line, "Missing SEMICOLON.");
+			return false;
+		}
+	}
+	return true;
 }
+
+
+bool DeclStmt(istream& in, int& line) {
+	bool status = true;
+
+	while(status) {
+		LexItem curTok = Parser::GetNextToken(in, line);
+
+		if(curTok != IDENT) {
+			ParseError(line, "Not an IDENT In DeclStmt.");
+			return false;
+		}
+
+		bool alreadyDefined = defVar.find(curTok.GetLexeme())->second == true;
+
+		if(alreadyDefined) {
+			ParseError(line, "Variable Has Already Been Declared.");
+			ParseError(line, "Incorrect Variable In DeclStmt.");
+			return false;
+		}
+		else { 
+			defVar[curTok.GetLexeme()] = true;
+		}
+
+		LexItem commaTok = Parser::GetNextToken(in, line);
+
+		if(commaTok != COMMA) {
+			Parser::PushBackToken(commaTok);
+			break;
+		}
+
+	}
+	LexItem colonTok = Parser::GetNextToken(in, line);
+
+	if(colonTok != COLON) {
+		ParseError(line, "Unrecognized Input Pattern.(Missing COLON)");
+		cout << "(" << colonTok.GetLexeme() << ")" << endl;
+		ParseError(line, "Incorrect Variable In Declaration Statement.");
+		return false;
+	}
+
+	LexItem dataType = Parser::GetNextToken(in, line);
+
+	if (dataType != INTEGER && dataType != REAL && dataType != STRING) {
+		ParseError(line, "Incorrect Declaration Type.");
+		return false;
+	}
+	return true;
+}
+
+
+
+
+
 
 
 //WriteLnStmt ::= writeln (ExprList) 
