@@ -20,7 +20,7 @@ extern bool DeclPart(istream& in, int& line); //DeclBlock done
 extern bool DeclStmt(istream& in, int& line); //
 extern bool Stmt(istream& in, int& line); //
 extern bool StructuredStmt(istream& in, int& line);
-extern bool CompoundStmt(istream& in, int& line); //prog body? -> i think so
+extern bool CompoundStmt(istream& in, int& line); //prog body
 extern bool SimpleStmt(istream& in, int& line);
 extern bool WriteLnStmt(istream& in, int& line); //
 extern bool WriteStmt(istream& in, int& line);
