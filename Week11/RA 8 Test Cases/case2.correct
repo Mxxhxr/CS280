@@ -1,0 +1,81 @@
+ErrorVal=ERROR
+intVal1=25
+intVal2=4
+doubleVal1=7.25
+doubleVal2=3.00
+StrVal1="CS280"
+StrVal2="Spring 2023"
+logVal1=true
+logVal4=false
+ERROR mod 25 is ERROR
+ERROR mod 4 is ERROR
+ERROR mod 7.25 is ERROR
+ERROR mod 3.00 is ERROR
+ERROR mod "CS280" is ERROR
+ERROR mod "Spring 2023" is ERROR
+ERROR mod true is ERROR
+ERROR mod false is ERROR
+25 mod ERROR is ERROR
+25 mod 4 is 1
+25 mod 7.25 is ERROR
+25 mod 3.00 is ERROR
+25 mod "CS280" is ERROR
+25 mod "Spring 2023" is ERROR
+25 mod true is ERROR
+25 mod false is ERROR
+4 mod ERROR is ERROR
+4 mod 25 is 4
+4 mod 7.25 is ERROR
+4 mod 3.00 is ERROR
+4 mod "CS280" is ERROR
+4 mod "Spring 2023" is ERROR
+4 mod true is ERROR
+4 mod false is ERROR
+7.25 mod ERROR is ERROR
+7.25 mod 25 is ERROR
+7.25 mod 4 is ERROR
+7.25 mod 3.00 is ERROR
+7.25 mod "CS280" is ERROR
+7.25 mod "Spring 2023" is ERROR
+7.25 mod true is ERROR
+7.25 mod false is ERROR
+3.00 mod ERROR is ERROR
+3.00 mod 25 is ERROR
+3.00 mod 4 is ERROR
+3.00 mod 7.25 is ERROR
+3.00 mod "CS280" is ERROR
+3.00 mod "Spring 2023" is ERROR
+3.00 mod true is ERROR
+3.00 mod false is ERROR
+"CS280" mod ERROR is ERROR
+"CS280" mod 25 is ERROR
+"CS280" mod 4 is ERROR
+"CS280" mod 7.25 is ERROR
+"CS280" mod 3.00 is ERROR
+"CS280" mod "Spring 2023" is ERROR
+"CS280" mod true is ERROR
+"CS280" mod false is ERROR
+"Spring 2023" mod ERROR is ERROR
+"Spring 2023" mod 25 is ERROR
+"Spring 2023" mod 4 is ERROR
+"Spring 2023" mod 7.25 is ERROR
+"Spring 2023" mod 3.00 is ERROR
+"Spring 2023" mod "CS280" is ERROR
+"Spring 2023" mod true is ERROR
+"Spring 2023" mod false is ERROR
+true mod ERROR is ERROR
+true mod 25 is ERROR
+true mod 4 is ERROR
+true mod 7.25 is ERROR
+true mod 3.00 is ERROR
+true mod "CS280" is ERROR
+true mod "Spring 2023" is ERROR
+true mod false is ERROR
+false mod ERROR is ERROR
+false mod 25 is ERROR
+false mod 4 is ERROR
+false mod 7.25 is ERROR
+false mod 3.00 is ERROR
+false mod "CS280" is ERROR
+false mod "Spring 2023" is ERROR
+false mod true is ERROR
