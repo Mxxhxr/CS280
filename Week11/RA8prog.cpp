@@ -3,7 +3,7 @@
 #include <vector> 
 using namespace std; 
 #include "val.h"
-//#include "val.cpp"
+#include "val.cpp"
 
 void ExecuteDIV(const Value& val1, const Value& val2) 
 { 
