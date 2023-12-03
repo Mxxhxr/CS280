@@ -1,0 +1,25 @@
+Name: Atlantic, Year: 1950, Capacity (in tons): 350
+Name: Pacific, Year: 1965, Maximum Passengers: 280
+Name: Nordsea, Year: 2011, Maximum Passengers: 375
+Name: Amazon, Year: 2004, Capacity (in tons): 300
+Name: Maryland, Year: 1994, Maximum Passengers: 530
+Name: Delaware, Year: 1999, Maximum Passengers: 290
+Name: Jamaica, Year: 2010, Maximum Passengers: 310
+Name: Portland, Year: 2020, Capacity (in tons): 285
+List of Ships:
+Ship Type: Cargo
+Name: Atlantic, Year: 1950, Capacity (in tons): 350
+Ship Type: Cruise
+Name: Pacific, Year: 1965, Maximum Passengers: 280
+Ship Type: Cruise
+Name: Nordsea, Year: 2011, Maximum Passengers: 375
+Ship Type: Cargo
+Name: Amazon, Year: 2004, Capacity (in tons): 300
+Ship Type: Cruise
+Name: Maryland, Year: 1994, Maximum Passengers: 530
+Ship Type: Cruise
+Name: Delaware, Year: 1999, Maximum Passengers: 290
+Ship Type: Cruise
+Name: Jamaica, Year: 2010, Maximum Passengers: 310
+Ship Type: Cargo
+Name: Portland, Year: 2020, Capacity (in tons): 285
