@@ -64,8 +64,8 @@ int main(int argc, char *argv [])
 		else if(type == 2)
 		{
 			//Cargo
-			vessel = new Cargo(shipname, year);
-    		vessel->setCapacity(load);
+			vessel = new Cargo(shipname, year, load);
+    		vessel->setCargoCapacity(load);
     		ShipList.push_back(vessel);
     		
     		vessel->print();
