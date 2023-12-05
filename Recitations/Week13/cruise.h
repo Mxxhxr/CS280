@@ -8,16 +8,18 @@ private:
     int maxPassengers;
 
 public:
-    Cruise();
-    Cruise(const std::string& name, int year, int maxPassengers);
-    ~Cruise() {}
+    Cruise() : Ship("", -1, cruise), maxPassengers(0) {}
+    Cruise(std::string name, int year, int maxPass)
+        : Ship(name, year, cruise), maxPassengers(maxPass) {}
 
-    // Getter and Setter for maxPassengers
-    void setmaxPassengers(int passengers);
-    int getmaxPassengers() const;
+    // setter & getter
+    void setmaxPassengers(int maxPass) { maxPassengers = maxPass; }
+    int getmaxPassengers() const { return maxPassengers; }
 
-    // Implementation of the inherited abstract print method
-    void print() const override;
+    // override print function
+    void print() const override {
+        std::cout << "Name: " << getShName() << ", Year: " << getShYear() << ", Maximum Passengers: " << maxPassengers << std::endl;
+    }
 };
 
-#endif  // CRUISE_H
+#endif
