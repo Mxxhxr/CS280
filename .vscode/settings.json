@@ -25,6 +25,7 @@
     "ios": "cpp",
     "system_error": "cpp",
     "unordered_set": "cpp",
-    "stdexcept": "cpp"
+    "stdexcept": "cpp",
+    "sstream": "cpp"
   }
 }
