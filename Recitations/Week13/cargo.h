@@ -8,16 +8,19 @@ private:
     int cargoCapacity;
 
 public:
-    Cargo();
-    Cargo(const std::string& name, int year, int cargoCapacity);
-    ~Cargo() {}
+    Cargo() : Ship("", -1, cargo), cargoCapacity(0) {}
+    Cargo(std::string name, int year) : Ship(name, year, cargo), cargoCapacity(0) {} // Added this constructor
+    Cargo(std::string name, int year, int capacity)
+        : Ship(name, year, cargo), cargoCapacity(capacity) {}
 
-    // Getter and Setter for cargoCapacity
-    void setCargoCapacity(int capacity);
-    int getCargoCapacity() const;
+    // setter & getter
+    void setCapacity(int capacity) { cargoCapacity = capacity; }
+    int getcargoCapacity() const { return cargoCapacity; }
 
-    // Implementation of the inherited abstract print method
-    void print() const override;
+    // override print function
+    void print() const override {
+        std::cout << "Name: " << getShName() << ", Year: " << getShYear() << ", Capacity (in tons): " << cargoCapacity << std::endl;
+    }
 };
 
-#endif  // CARGO_H
+#endif

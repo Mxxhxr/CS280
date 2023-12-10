@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum shipType { cruise, cargo };  // Declare the enum here
+// shipType defined globally
 
 class Ship {
 private:
@@ -12,22 +12,21 @@ private:
     shipType shType;
 
 public:
-    Ship(const std::string& name, int year, shipType type);
+    Ship(std::string name, int year, shipType type)
+        : shName(name), shYear(year), shType(type) {}
+
     virtual ~Ship() {}
 
-    // Getter and Setter for ship name
-    void setShName(const std::string& name);
-    std::string getShName() const;
+    // setters & getters
+    void setShName(const std::string &name) { shName = name; }
+    void setShYear(int year) { shYear = year; }
+    void setShType(shipType type) { shType = type; }
 
-    // Getter and Setter for ship year
-    void setShYear(int year);
-    int getShYear() const;
+    std::string getShName() const { return shName; }
+    int getShYear() const { return shYear; }
+    shipType getShType() const { return shType; }
 
-    // Getter for ship type
-    shipType getShType() const;
-
-    // Abstract print method
     virtual void print() const = 0;
 };
 
-#endif  // SHIP_H
+#endif
