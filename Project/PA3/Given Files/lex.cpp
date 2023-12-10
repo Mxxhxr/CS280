@@ -310,7 +310,4 @@ LexItem getNextToken(istream& in, int& linenum)
 	return LexItem(ERR, "some strange I/O error", linenum);
 }
 
-
-
-
-
+/**/
