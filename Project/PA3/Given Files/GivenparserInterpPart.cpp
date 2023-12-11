@@ -4,7 +4,7 @@
 map<string, bool> defVar;
 map<string, Token> SymTable;
 
-map<string, Value> TempsResults; //Container of temporary locations of Value objects for results of expressions, variables values and constants 
+map<string, Value> TempsResults; //container of temporary locations of Value objects for results of expressions, variables values and constants 
 queue <Value> * ValQue; //declare a pointer variable to a queue of Value objects
 
 namespace Parser {
@@ -42,10 +42,8 @@ void ParseError(int line, string msg)
 	cout << line << ": " << msg << endl;
 }
 
-//WriteLnStmt ::= writeln (ExprList) 
 bool WriteLnStmt(istream& in, int& line) {
 	LexItem t;
-	//cout << "in WriteStmt" << endl;
 	ValQue = new queue<Value>;
 	
 	t = Parser::GetNextToken(in, line);
@@ -69,7 +67,6 @@ bool WriteLnStmt(istream& in, int& line) {
 		return false;
 	}
 	
-	//Evaluate: print out the list of expressions' values
 	while (!(*ValQue).empty())
 	{
 		Value nextVal = (*ValQue).front();
@@ -78,13 +75,12 @@ bool WriteLnStmt(istream& in, int& line) {
 	}
 	cout << endl;
 	return ex;
-}//End of WriteLnStmt
+}
 
 //ExprList:= Expr {,Expr}
 bool ExprList(istream& in, int& line) {
 	bool status = false;
 	Value retVal;
-	//cout << "in ExprList and before calling Expr" << endl;
 	status = Expr(in, line, retVal);
 	if(!status){
 		ParseError(line, "Missing Expression");
@@ -94,9 +90,7 @@ bool ExprList(istream& in, int& line) {
 	LexItem tok = Parser::GetNextToken(in, line);
 	
 	if (tok == COMMA) {
-		//cout << "before calling ExprList" << endl;
 		status = ExprList(in, line);
-		//cout << "after calling ExprList" << endl;
 	}
 	else if(tok.GetToken() == ERR){
 		ParseError(line, "Unrecognized Input Pattern");
@@ -108,5 +102,5 @@ bool ExprList(istream& in, int& line) {
 		return true;
 	}
 	return status;
-}//ExprList
+}
 
